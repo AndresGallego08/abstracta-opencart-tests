@@ -1,44 +1,65 @@
-# This workflow uses actions that are not certified by GitHub.
-# They are provided by a third-party and are governed by
-# separate terms of service, privacy policy, and support
-# documentation.
-# This workflow will build a package using Gradle and then publish it to GitHub packages when a release is created
-# For more information see: https://github.com/actions/setup-java/blob/main/docs/advanced-usage.md#Publishing-using-gradle
+apply plugin: 'java-library'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: 'net.serenity-bdd.aggregator'
 
-name: Gradle Package
+compileJava.options.encoding = 'UTF-8'
 
-on:
-  release:
-    types: [created]
+repositories {
+    jcenter()
+    mavenLocal()
+}
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath('net.serenity-bdd:serenity-gradle-plugin:2.0.33')
+    }
+}
 
-jobs:
-  build:
+dependencies {
+    implementation 'net.serenity-bdd:serenity-core:2.0.82'
+    implementation 'net.serenity-bdd:serenity-junit:2.0.33'
+    implementation 'net.serenity-bdd:serenity-screenplay:2.0.82'
+    implementation group: 'net.serenity-bdd', name: 'serenity-ensure', version: '2.0.82'
+    implementation 'net.serenity-bdd:serenity-screenplay-webdriver:2.0.82'
+    implementation 'net.serenity-bdd:serenity-cucumber:1.9.45'
+    implementation 'junit:junit:4.12'
+    implementation 'net.serenity-bdd:serenity-cucumber:1.9.23'
+    implementation 'org.slf4j:slf4j-api:2.0.9'
+    implementation 'org.slf4j:slf4j-simple:2.0.9'
+    testImplementation 'io.github.bonigarcia:webdrivermanager:5.8.0'
+    implementation 'com.github.javafaker:javafaker:1.0.2'
+}
 
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
+compileJava.options.encoding = 'UTF-8'
+gradle.startParameter.continueOnFailure = true
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+test {
+    ignoreFailures = false
+}
 
-    steps:
-    - uses: actions/checkout@v4
-    - name: Set up JDK 17
-      uses: actions/setup-java@v4
-      with:
-        java-version: '17'
-        distribution: 'temurin'
-        server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
-        settings-path: ${{ github.workspace }} # location for the settings.xml file
+sourceCompatibility = '11'
+targetCompatibility = '11'
 
-    - name: Setup Gradle
-      uses: gradle/actions/setup-gradle@af1da67850ed9a4cedd57bfd976089dd991e2582 # v4.0.0
+task renameSerenityReport {
+    doLast {
+        def reportDir = file("target/site/serenity")  // Cambio la ruta correcta
+        def indexFile = new File(reportDir, "index.html")
+        def newFile = new File(reportDir, "my-custom-report.html")
 
-    - name: Build with Gradle
-      run: ./gradlew build
+        if (indexFile.exists()) {
+            indexFile.renameTo(newFile)
+            println "Serenity report renamed to my-custom-report.html"
+        } else {
+            println "Serenity report not found!"
+        }
+    }
+}
 
-    # The USERNAME and TOKEN need to correspond to the credentials environment variables used in
-    # the publishing section of your build.gradle
-    - name: Publish to GitHub Packages
-      run: ./gradlew publish
-      env:
-        USERNAME: ${{ github.actor }}
-        TOKEN: ${{ secrets.GITHUB_TOKEN }}
+// Ejecutar la renombración después de generar el reporte
+aggregate.finalizedBy renameSerenityReport
+
