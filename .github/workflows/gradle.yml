@@ -3,47 +3,54 @@ name: Run Automation Tests
 on:
   push:
     branches:
-      - main
+      - main  # Ejecuta en push hacia la rama principal
   pull_request:
     branches:
-      - main
-  workflow_dispatch:
+      - main  # Ejecuta en PR hacia la rama principal
+  workflow_dispatch: # Permite ejecutar manualmente el flujo
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
 
     steps:
-      # Paso 1: Check out el repositorio
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      # Checkout del repositorio
+      - name: 📥 Checkout repository
+        uses: actions/checkout@v3
 
-      # Paso 2: Configurar Java 11
-      - name: Set up Java 11
+      # Configurar Java 11
+      - name: ☕ Set up Java
         uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
           java-version: '11'
 
-      # Paso 3: Configurar Gradle
-      - name: Set up Gradle
+      # Configurar Gradle
+      - name: 📦 Set up Gradle
         uses: gradle/gradle-build-action@v2
 
-      # Paso 4: Ejecutar las pruebas con Gradle
-      - name: Run Gradle tests
-        working-directory: automatizacion-web
+      # Configurar WebDriverManager para la ejecución
+      - name: 🛠️ Setup WebDriverManager
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y chromium-chromedriver
+
+      # Ejecutar pruebas
+      - name: 🚀 Run tests
+        working-directory: automatizacion-web  # Apunta a la carpeta correcta
         run: |
           chmod +x gradlew
           ./gradlew clean test aggregate
 
-      # Paso 5: Verificar los archivos generados
-      - name: List files in report directory
+      # Renombrar reporte y subir
+      - name: Rename Serenity Report
+        working-directory: automatizacion-web  # Asegura que se ejecute en la carpeta correcta
         run: |
-          ls -l automatizacion-web/target/site/serenity/
+          gradle renameSerenityReport  # Renombra el reporte según tu configuración
 
-      # Paso 6: Subir los reportes de Serenity
-      - name: Upload Serenity Reports
-        uses: actions/upload-artifact@v2  # Versión @v2
+      # Subir reporte a los artefactos
+      - name: 📊 Upload Serenity Reports
+        uses: actions/upload-artifact@v3
         with:
           name: serenity-report
-          path: automatizacion-web/target/site/serenity/
+          path: automatizacion-web/target/site/serenity/my-custom-report.html
