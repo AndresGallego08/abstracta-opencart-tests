@@ -2,6 +2,10 @@
 
 Este proyecto de automatización está desarrollado en **Java** utilizando el patrón de diseño **Screenplay** y el framework **Serenity BDD**. Su objetivo es automatizar la compra y eliminación de productos en la tienda en línea OpenCart.
 
+# Repositorio en GitHub
+
+https://github.com/AndresGallego08/abstracta-opencart-tests
+
 ## Tecnologías Utilizadas
 - **Java:** 11.0.23 LTS
 - **Gradle:** 7.5
