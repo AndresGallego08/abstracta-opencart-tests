@@ -22,16 +22,21 @@ jobs:
           distribution: 'temurin'
           java-version: '11'
 
+      - name: Initialize Gradle Wrapper
+        run: gradle wrapper
+        working-directory: automatizacion-web
+
       - name: Grant execute permissions to Gradle Wrapper
-        run: chmod +x automatizacion-web/gradlew
+        run: chmod +x gradlew
+        working-directory: automatizacion-web
 
       - name: Run Tests with Gradle
         run: ./gradlew clean test aggregate
         working-directory: automatizacion-web
 
       - name: Upload Serenity Reports
-        uses: actions/upload-artifact@v4  # Cambio a v4
+        uses: actions/upload-artifact@v4
         with:
           name: serenity-report
           path: automatizacion-web/target/site/serenity/
-          retention-days: 30  # Se mantiene el artefacto por 30 días
+          retention-days: 30
