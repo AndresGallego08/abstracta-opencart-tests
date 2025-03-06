@@ -11,7 +11,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest  # Utilizamos un runner de Ubuntu en lugar de una imagen de Docker personalizada
+    runs-on: ubuntu-latest  # Utilizamos un runner de Ubuntu en lugar de una imagen personalizada
 
     steps:
       # Paso 1: Check out el repositorio
@@ -25,7 +25,7 @@ jobs:
           distribution: 'temurin'  # OpenJDK temurin
           java-version: '11'
 
-      # Paso 3: Configurar Gradle (podemos usar la imagen predeterminada de Gradle de GitHub Actions)
+      # Paso 3: Configurar Gradle
       - name: Set up Gradle
         uses: gradle/gradle-build-action@v2
 
@@ -33,9 +33,8 @@ jobs:
       - name: Run Gradle tests
         working-directory: automatizacion-web  # Asegúrate de que el directorio sea correcto
         run: |
-          chmod +x gradlew
-          ./gradlew clean test -d
-          ./gradlew aggregate
+          chmod +x gradlew  # Asegúrate de que el script gradlew sea ejecutable
+          ./gradlew clean test aggregate  # Ejecutamos el comando de gradle que usas localmente
 
       # Paso 5: (Opcional) Subir los reportes de Serenity
       - name: Upload Serenity Reports
