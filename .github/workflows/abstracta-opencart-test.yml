@@ -36,7 +36,7 @@ jobs:
 
       # Optional: Upload Serenity reports as artifacts (if you want to save the reports)
       - name: Upload Serenity Reports
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v2  # Cambié a v2 aquí
         with:
           name: serenity-report
           path: automatizacion-web/target/site/serenity/  # Ajusta la ruta si es diferente
