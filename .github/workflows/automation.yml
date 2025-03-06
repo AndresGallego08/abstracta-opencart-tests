@@ -40,9 +40,23 @@ jobs:
       - name: 📂 Check if Serenity report exists
         run: ls automatizacion-web/target/site/serenity/  # Verificar que los reportes existen
 
-      # Paso 6: Subir el reporte de Serenity como artefacto
+      # Paso 6: Subir el reporte de Serenity como artefacto (usando la versión v1 de upload-artifact)
       - name: 📊 Upload Serenity Reports
-        uses: actions/upload-artifact@v2  # Usar la versión v2 de upload-artifact
+        uses: actions/upload-artifact@v1  # Usar la versión v1 de upload-artifact
         with:
           name: serenity-report
           path: automatizacion-web/target/site/serenity/
+
+      # Si quieres hacer una prueba para ver si el error persiste:
+      # Paso 7: (Alternativa) Si el paso anterior sigue fallando, comprimir el reporte y subirlo manualmente
+      - name: 📂 Zip Serenity report
+        run: |
+          zip -r serenity-report.zip automatizacion-web/target/site/serenity/
+
+      - name: 📊 Upload Serenity Reports manually
+        run: |
+          curl -X POST \
+            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Content-Type: application/zip" \
+            --data-binary @serenity-report.zip \
+            "https://uploads.github.com/repos/${{ github.repository }}/releases/assets?name=serenity-report.zip"
