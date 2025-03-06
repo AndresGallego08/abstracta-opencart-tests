@@ -11,38 +11,38 @@ on:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest  # El runner de GitHub se ejecutará en Ubuntu
 
     steps:
-      # Paso para hacer checkout del código
+      # Paso 1: Checkout del código del repositorio
       - name: 📥 Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v3  # Descargar el código del repositorio
 
-      # Paso para configurar Java
+      # Paso 2: Configurar Java
       - name: ☕ Set up Java
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v3  # Configurar Java 11
         with:
           distribution: 'temurin'
           java-version: '11'
 
-      # Paso para configurar Gradle
+      # Paso 3: Configurar Gradle
       - name: 📦 Set up Gradle
-        uses: gradle/gradle-build-action@v2
+        uses: gradle/gradle-build-action@v2  # Configurar Gradle
 
-      # Paso para ejecutar las pruebas de automatización
+      # Paso 4: Ejecutar las pruebas de automatización
       - name: 🚀 Run tests
-        working-directory: automatizacion-web  # 🔥 IMPORTANTE: Apuntar a la carpeta correcta
+        working-directory: automatizacion-web  # Apuntar al directorio correcto donde está la automatización
         run: |
-          chmod +x gradlew
-          ./gradlew clean test aggregate
+          chmod +x gradlew  # Asegurarse de que el script gradlew sea ejecutable
+          ./gradlew clean test aggregate  # Ejecutar las pruebas y generar los reportes de Serenity
 
-      # Verificación de que el reporte de Serenity fue generado correctamente
+      # Paso 5: Verificar si los reportes de Serenity se generaron correctamente
       - name: 📂 Check if Serenity report exists
-        run: ls automatizacion-web/target/site/serenity/
+        run: ls automatizacion-web/target/site/serenity/  # Verificar que los reportes existen
 
-      # Paso para cargar el reporte de Serenity como artefacto
+      # Paso 6: Subir el reporte de Serenity como artefacto
       - name: 📊 Upload Serenity Reports
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v3  # Subir los reportes generados
         with:
           name: serenity-report
           path: automatizacion-web/target/site/serenity/
