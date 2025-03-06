@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?><testsuite errors="0" failures="1" name="Compra y eliminación de un producto en OpenCart" skipped="0" tests="1" time="36.57" timestamp="2025-03-06 04:55:55"><testcase name="Agregar y eliminar un producto del carrito de compras"><failure message="Expected enabled element was not enabled" type="net.thucydides.core.webdriver.exceptions.ElementShouldBeEnabledException">Expected enabled element was not enabled</failure><system-err>Expected enabled element was not enabled&#13;
-com.abstracta.opencart.automation.tasks.AgregarProductosAlCarrito.performAs(AgregarProductosAlCarrito.java:36)&#13;
-com.abstracta.opencart.automation.stepdefinitions.GestionCarritoSteps.agregarProductosAlCarrito(GestionCarritoSteps.java:33)&#13;
-cucumber.runner.Runner.runPickle(Runner.java:80)&#13;
-worker.org.gradle.process.internal.worker.GradleWorkerMain.run(GradleWorkerMain.java:69)&#13;
-worker.org.gradle.process.internal.worker.GradleWorkerMain.main(GradleWorkerMain.java:74)&#13;
-</system-err></testcase></testsuite>
