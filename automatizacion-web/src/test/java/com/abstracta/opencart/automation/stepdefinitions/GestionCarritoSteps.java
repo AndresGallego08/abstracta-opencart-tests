@@ -27,7 +27,7 @@ public class GestionCarritoSteps {
                 .collect(Collectors.toList());
 
         productosAgregados = listaProductos.stream()
-                .map(Producto::getNombre) // Suponiendo que Producto tiene un método getNombre()
+                .map(Producto::getNombre)
                 .collect(Collectors.toList()); // Guardar los nombres de los productos
 
         theActorInTheSpotlight().attemptsTo(AgregarProductosAlCarrito.deCompras(listaProductos));

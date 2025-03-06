@@ -30,13 +30,10 @@ public class AgregarProductosAlCarrito implements Task {
     public <T extends Actor> void performAs(T actor) {
 
         for (Producto producto : productos) {
-            Target PRIMER_PRODUCTO = Target.the("Primer producto listado")
-                    .locatedBy("//div[@class='product-thumb']//a[contains(text(),'" + producto.getNombre() + "')]");
 
             actor.attemptsTo(
                     Enter.theValue(producto.getNombre()).into(BUSCADOR),
                     Hit.the(Keys.ENTER).into(BUSCADOR),
-                    //Click.on(PRIMER_PRODUCTO),
                     Click.on(BOTON_AGREGAR)
             );
         }
