@@ -1,0 +1,48 @@
+name: Run Automation Tests
+
+on:
+  push:
+    branches:
+      - master  # Se ejecutará cuando hagas push a master
+  pull_request:
+    branches:
+      - master  # Se ejecutará en los PR hacia master
+  workflow_dispatch:  # Permite ejecutarlo manualmente desde GitHub
+
+jobs:
+  test:
+    runs-on: ubuntu-latest  # El runner de GitHub se ejecutará en Ubuntu
+
+    steps:
+      # Paso 1: Checkout del código del repositorio
+      - name: 📥 Checkout repository
+        uses: actions/checkout@v3  # Descargar el código del repositorio
+
+      # Paso 2: Configurar Java
+      - name: ☕ Set up Java
+        uses: actions/setup-java@v3  # Configurar Java 11
+        with:
+          distribution: 'temurin'
+          java-version: '11'
+
+      # Paso 3: Configurar Gradle
+      - name: 📦 Set up Gradle
+        uses: gradle/gradle-build-action@v2  # Configurar Gradle
+
+      # Paso 4: Ejecutar las pruebas de automatización
+      - name: 🚀 Run tests
+        working-directory: automatizacion-web  # Apuntar al directorio correcto donde está la automatización
+        run: |
+          chmod +x gradlew  # Asegurarse de que el script gradlew sea ejecutable
+          ./gradlew clean test aggregate  # Ejecutar las pruebas y generar los reportes de Serenity
+
+      # Paso 5: Verificar si los reportes de Serenity se generaron correctamente
+      - name: 📂 Check if Serenity report exists
+        run: ls automatizacion-web/target/site/serenity/  # Verificar que los reportes existen
+
+      # Paso 6: Subir el reporte de Serenity como artefacto
+      - name: 📊 Upload Serenity Reports
+        uses: actions/upload-artifact@v2  # Usar la versión v2 de upload-artifact
+        with:
+          name: serenity-report
+          path: automatizacion-web/target/site/serenity/
