@@ -7,6 +7,8 @@ import net.serenitybdd.screenplay.abilities.BrowseTheWeb;
 import net.serenitybdd.screenplay.actions.Open;
 import net.serenitybdd.screenplay.actors.Cast;
 import net.serenitybdd.screenplay.actors.OnStage;
+import net.thucydides.core.util.EnvironmentVariables;
+import net.thucydides.core.util.SystemEnvironmentVariables;
 import net.thucydides.core.annotations.Managed;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -17,14 +19,19 @@ import static net.serenitybdd.screenplay.actors.OnStage.theActorInTheSpotlight;
 public class TestSetup {
 
     @Managed(driver = "chrome")
-    private WebDriver hisBrowser;  // Usamos @Managed para que Serenity maneje el WebDriver
+    private WebDriver hisBrowser;
+
+    private final EnvironmentVariables environmentVariables = SystemEnvironmentVariables.createEnvironmentVariables();
 
     @Before
     public void setUp() {
-        // WebDriverManager configura el ChromeDriver automáticamente
+        // Leer si headless está habilitado en serenity.properties
+        boolean isHeadless = Boolean.parseBoolean(environmentVariables.getProperty("serenity.browser.headless", "false"));
+
+        // Configurar ChromeDriver
         WebDriverManager.chromedriver().setup();
 
-        // Configura las opciones de Chrome para ignorar los errores de certificado
+        // Configurar opciones de Chrome
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--incognito");
         options.addArguments("--start-maximized");
@@ -32,14 +39,18 @@ public class TestSetup {
         options.addArguments("--disable-web-security");
         options.addArguments("--allow-running-insecure-content");
 
+        // Aplicar modo headless si está activado
+        if (isHeadless) {
+            options.addArguments("--headless=new");
+        }
 
-        // Configura el navegador con las opciones configuradas
-        hisBrowser = new ChromeDriver(options);  // Establecemos el WebDriver con las opciones
+        // Inicializar navegador con las opciones configuradas
+        hisBrowser = new ChromeDriver(options);
         OnStage.setTheStage(new Cast());
         OnStage.theActorCalled("User");
         OnStage.theActorInTheSpotlight().can(BrowseTheWeb.with(hisBrowser));
 
-        // Se abre la url de la página de pruebas
+        // Abrir la URL de prueba
         theActorInTheSpotlight().wasAbleTo(Open.url(UrlCertificacion.OPEN_CART_ABSTRACTA));
     }
 }
