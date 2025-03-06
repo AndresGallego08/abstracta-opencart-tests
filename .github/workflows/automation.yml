@@ -1,19 +1,19 @@
-name: Serenity Tests
+name: Run Serenity Tests
 
 on:
   push:
     branches: [ main, master ]
   pull_request:
     branches: [ main, master ]
-  workflow_dispatch: # Permite ejecutarlo manualmente desde GitHub Actions
+  workflow_dispatch:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
     timeout-minutes: 60
+    runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout Repository
         uses: actions/checkout@v4
 
       - name: Set up JDK 11
@@ -22,14 +22,15 @@ jobs:
           distribution: 'temurin'
           java-version: '11'
 
-      - name: Set up Gradle
-        uses: gradle/gradle-build-action@v2
+      - name: Grant execute permissions to Gradle Wrapper
+        run: chmod +x automatizacion-web/gradlew
 
       - name: Run Tests with Gradle
         run: ./gradlew clean test aggregate
+        working-directory: automatizacion-web
 
       - name: Upload Serenity Reports
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v3
         with:
           name: serenity-report
-          path: target/site/serenity/
+          path: automatizacion-web/target/site/serenity/
