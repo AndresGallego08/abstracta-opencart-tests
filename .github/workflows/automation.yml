@@ -30,7 +30,8 @@ jobs:
         working-directory: automatizacion-web
 
       - name: Upload Serenity Reports
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4  # Cambio a v4
         with:
           name: serenity-report
           path: automatizacion-web/target/site/serenity/
+          retention-days: 30  # Se mantiene el artefacto por 30 días
