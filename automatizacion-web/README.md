@@ -75,7 +75,50 @@ La clase `TestSetup` ubicada en `stepdefinitions` realiza lo siguiente:
 - Abre la URL de prueba.
 - Configura el actor principal que interactúa con la aplicación.
 
-## Ejecución de la Automatización
+## PIPELINE:  Ejecución de la Automatización desde GitHub Actions
+
+### Desde GitHub Actions
+Se ha configurado un pipeline en GitHub Actions para ejecutar la automatización de pruebas. 
+Dentro de la pestaña Actions del repositorio, existe un workflow llamado `Run Serenity Tests` que permite ejecutar las pruebas en un entorno automatizado.
+
+### ¿Cómo ejecutar el workflow manualmente?
+- Ir al repositorio en GitHub.https://github.com/AndresGallego08/abstracta-opencart-tests/actions
+- Hacer clic en la pestaña Actions.
+- Buscar y seleccionar el workflow `Run Serenity Tests`.
+- Hacer clic en `Run workflow` para iniciar la ejecución.
+- Esperar a que finalice y revisar los resultados en los logs y reportes generados.
+
+### ¿Cómo descargar el reporte de ejecución?
+- Ingresar a la pestaña Actions en el respositorio 
+- Hacer click en All workflows
+
+![img.png](img.png)
+
+- Hacer click en la última ejecución y se visualizará lo siguiente:
+
+![img_1.png](img_1.png)
+
+- Hacer click en `test` y después click en `Upload Serenity Reports`.
+
+![img_2.png](img_2.png)
+
+- Hacer click en el link de descarga
+
+![img_3.png](img_3.png)
+
+- Después de descargar el reporte, se debe descomprimir (importante descomprimir para visualizar correctamente las imagenes del reporte) 
+- Dentro de la carpeta descomprimida se encuentra un archivo html llamado `my-custom-report.html`
+
+![img_4.png](img_4.png)
+
+- Hacer doble click sobre el archivo `my-custom-report.html` y abrir en el navegador. Esto permite visualizar el reporte de **_Serenity_**
+
+![img_5.png](img_5.png)
+
+![img_6.png](img_6.png)
+
+
+## Ejecución de la Automatización en entorno Local
 
 ### Desde la línea de comandos
 Para ejecutar la automatización mediante **Gradle**, usa el siguiente comando:
