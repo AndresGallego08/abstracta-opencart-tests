@@ -36,9 +36,14 @@ jobs:
           chmod +x gradlew  # Asegúrate de que el script gradlew sea ejecutable
           ./gradlew clean test aggregate  # Ejecutamos el comando de gradle que usas localmente
 
-      # Paso 5: (Opcional) Subir los reportes de Serenity
+      # Paso 5: Verificar los archivos generados
+      - name: List files in report directory
+        run: |
+          ls -l automatizacion-web/target/site/serenity/
+
+      # Paso 6: Subir los reportes de Serenity (usando la versión más reciente)
       - name: Upload Serenity Reports
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: serenity-report
           path: automatizacion-web/target/site/serenity/  # Asegúrate de que la ruta sea correcta
