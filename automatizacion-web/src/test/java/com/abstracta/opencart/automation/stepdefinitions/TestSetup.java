@@ -32,6 +32,7 @@ public class TestSetup {
         options.addArguments("--disable-web-security");
         options.addArguments("--allow-running-insecure-content");
 
+
         // Configura el navegador con las opciones configuradas
         hisBrowser = new ChromeDriver(options);  // Establecemos el WebDriver con las opciones
         OnStage.setTheStage(new Cast());

@@ -45,3 +45,21 @@ test {
 sourceCompatibility = '11'
 targetCompatibility = '11'
 
+task renameSerenityReport {
+    doLast {
+        def reportDir = file("target/site/serenity")  // Cambio la ruta correcta
+        def indexFile = new File(reportDir, "index.html")
+        def newFile = new File(reportDir, "my-custom-report.html")
+
+        if (indexFile.exists()) {
+            indexFile.renameTo(newFile)
+            println "Serenity report renamed to my-custom-report.html"
+        } else {
+            println "Serenity report not found!"
+        }
+    }
+}
+
+// Ejecutar la renombración después de generar el reporte
+aggregate.finalizedBy renameSerenityReport
+

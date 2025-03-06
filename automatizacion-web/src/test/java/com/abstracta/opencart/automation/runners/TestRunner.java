@@ -1,4 +1,4 @@
-package com.doublevpartners.opencart.automation.runners;
+package com.abstracta.opencart.automation.runners;
 
 import cucumber.api.CucumberOptions;
 import cucumber.api.SnippetType;
@@ -11,7 +11,7 @@ import org.junit.runner.RunWith;
         glue = "com.abstracta.opencart.automation.stepdefinitions",
         snippets = SnippetType.CAMELCASE,
         plugin = {"pretty", "html:target/cucumber-reports", "json:target/cucumber.json"},
-        tags = "@anyTag"
+        tags = "@gestionCarrito "
 )
 public class TestRunner {
 }
