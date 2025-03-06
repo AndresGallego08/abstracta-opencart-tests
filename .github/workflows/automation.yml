@@ -42,7 +42,7 @@ jobs:
 
       # Paso 6: Subir el reporte de Serenity como artefacto
       - name: 📊 Upload Serenity Reports
-        uses: actions/upload-artifact@v3  # Subir los reportes generados
+        uses: actions/upload-artifact@v2  # Usar la versión v2 de upload-artifact
         with:
           name: serenity-report
           path: automatizacion-web/target/site/serenity/
