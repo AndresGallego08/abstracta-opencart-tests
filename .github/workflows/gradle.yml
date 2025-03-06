@@ -3,7 +3,7 @@ name: Run Automation Tests
 on:
   push:
     branches:
-      - main  # Cambia esto si usas otra rama principal
+      - main
   pull_request:
     branches:
       - main
@@ -11,7 +11,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest  # Utilizamos un runner de Ubuntu en lugar de una imagen personalizada
+    runs-on: ubuntu-latest
 
     steps:
       # Paso 1: Check out el repositorio
@@ -22,7 +22,7 @@ jobs:
       - name: Set up Java 11
         uses: actions/setup-java@v3
         with:
-          distribution: 'temurin'  # OpenJDK temurin
+          distribution: 'temurin'
           java-version: '11'
 
       # Paso 3: Configurar Gradle
@@ -31,19 +31,19 @@ jobs:
 
       # Paso 4: Ejecutar las pruebas con Gradle
       - name: Run Gradle tests
-        working-directory: automatizacion-web  # Asegúrate de que el directorio sea correcto
+        working-directory: automatizacion-web
         run: |
-          chmod +x gradlew  # Asegúrate de que el script gradlew sea ejecutable
-          ./gradlew clean test aggregate  # Ejecutamos el comando de gradle que usas localmente
+          chmod +x gradlew
+          ./gradlew clean test aggregate
 
       # Paso 5: Verificar los archivos generados
       - name: List files in report directory
         run: |
           ls -l automatizacion-web/target/site/serenity/
 
-      # Paso 6: Subir los reportes de Serenity (usando la versión más reciente)
+      # Paso 6: Subir los reportes de Serenity
       - name: Upload Serenity Reports
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v2  # Versión @v2
         with:
           name: serenity-report
-          path: automatizacion-web/target/site/serenity/  # Asegúrate de que la ruta sea correcta
+          path: automatizacion-web/target/site/serenity/
